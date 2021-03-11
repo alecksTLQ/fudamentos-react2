@@ -11,7 +11,7 @@ const Header =()=>{
   )
 }
 
-const useFetch =(url, initialState = [])=>{
+const useFetch =(url)=>{
   /*
     hook personalizado useFetch
       encapsula logica para realizar una peticion http
@@ -19,11 +19,10 @@ const useFetch =(url, initialState = [])=>{
       setData metodo por el cual se actualiza el data
       isFetching determina si la peticion aun se esta efectuando
   */
-  const [data, setData] = useState(initialState)
+  const [data, setData] = useState([])
   const [isFetching , setFetching] = useState(true)
 
   useEffect(() => {
-    setFetching(true)
     fetch(url)
     .then(res => res.json())
     .then(data => {
@@ -43,34 +42,19 @@ const useFetch =(url, initialState = [])=>{
 
 const App =()=>{
 
-  const [clicks, setClicks] = useState(0) 
-
   /*usando el hook personalizado 
     users = data, isLoading= isFetching, estos son los datos que se retorna desde del hook
     y la url es el parametro que recibe el hook
-
-    
   */
   const [users, isLoading] = useFetch(
-    'https://jsonplaceholder.typicode.com/users/'+ clicks, {}
+    'https://jsonplaceholder.typicode.com/users'
   )
-  
-
-  const add =()=>{
-    setClicks(clicks + 1)
-  }
   
   return(
     <div>
       <Header/>
       {isLoading && <h1>Cargango...</h1>}
-      <h1> {users.name} </h1>
-      <h3> {users.phone} </h3>
-      <button onClick={add}>
-        clicks ({clicks})
-      </button>
-      {
-        /*<ul>
+      <ul>
         {
           users.map((user)=>{
             return(
@@ -80,8 +64,7 @@ const App =()=>{
             )
           })
         }
-      </ul>*/
-      }
+      </ul>
     </div>
   )
 }
